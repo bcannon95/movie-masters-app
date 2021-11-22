@@ -1,53 +1,109 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { Route, Switch, NavLink } from 'react-router-dom';
+import { collection, getDocs, doc, setDoc, deleteDoc, addDoc  } from 'firebase/firestore/lite';
+
+import db from './config/firebase-setup';
+import Home from './pages/Home';
+import CreateMovie from './pages/CreateMovie';
+import EditMovie from './pages/EditMovie';
+import MovieList from './pages/MovieList';
+import MovieRandomiser from './pages/MovieRandomiser'
+import ShowMovie from './pages/ShowMovie'
 import './App.css';
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDZrEjAj2fjGSz2braVVccN68qDyPapt2g",
-  authDomain: "movie-db-b114f.firebaseapp.com",
-  projectId: "movie-db-b114f",
-  storageBucket: "movie-db-b114f.appspot.com",
-  messagingSenderId: "708627248986",
-  appId: "1:708627248986:web:ae2d10035a23626a6d6563",
-  measurementId: "G-779EYNMWJZ"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 export default class App extends React.Component {
 	state = {
 		movieList: [],
 	}
 
-function App() {
+  createMovie = async newMovie => {
+    await addDoc(moviesCol, newMovie);
+
+    this.props.history.push('/movies');
+    this.readMovies();
+  }
+
+  removeMovie = async id => {
+  const movieDoc = doc(moviesCol, id);
+
+  await deleteDoc(moviesDoc);
+
+  this.props.history.push('/movies');
+  this.readMovies();
+}
+
+  updateMovie = async editedMovie => {
+    const movieDoc = doc(moviesCol, editedMovie.id);
+
+    await setDoc(movieDoc, editedMovie);
+
+    this.props.history.push('/movie');
+    this.readMovies();
+}
+
+  readMovies = async () => {
+    const moviesSnapshot = await getDocs(moviesCol)
+
+    const moviesData = [];
+    moviesSnapshot.forEach(doc => {
+      moviesData.push({
+        id: doc.id,
+        name: doc.data().name,
+        poster: doc.data().poster,
+        rating: doc.data().rating,
+        year: doc.data().year,
+    });
+  });
+
+    this.setState({
+      movies: moviesData
+  });
+}
+
+componentDidMount() {
+  this.readMovies();
+}
+
+render() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <NavLink exact to='/'>Movie Masters</NavLink>
+        <nav>
+          {/* Use this.state.user to conditionally render the menu */}
+          <NavLink exact to='/puppies'>MOVIE LIST</NavLink>
+          <NavLink exact to='/puppies/add'>ADD MOVIE</NavLink>
+        </nav>
       </header>
+      <main>
+        <Switch>
+          <Route exact path='/'>
+            <Home />
+          </Route>
+          {/* Create routes to the Login and Register components here */}
+          {/* Create a /logout route that calls the logout method */}
+          <Route exact path='/movies'>
+            {/* Refactor using the Redirect component */}
+            <MovieList movieList={this.state.movies} removeMovie={this.removeMovie} />
+          </Route>
+          <Route exact path='/movies/add'>
+            {/* Refactor using the Redirect component */}
+            <CreateMovie createMovie={this.createMovie} />
+          </Route>
+          <Route path='/movies/edit' render={({ location }) =>
+            // Refactor by pushing users to the /login route
+            <EditMovie updateMovie={this.updateMovie} location={location} />
+          } />
+          <Route path='/movies/details' render={({ location }) =>
+            // Refactor by pushing users to the /login route
+            <MovieCard removeMovie={this.removeMovie} location={location} />
+          } />
+          <Route path='*'>
+            <div className='panel panel-default homepage'>404</div>
+          </Route>
+        </Switch>
+      </main>
     </div>
   );
 }
-
-export default App;
+}
