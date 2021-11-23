@@ -131,3 +131,22 @@ span a:after{
 span a:hover{
   transform: translateZ(-25px) rotateX(-90deg);
 }
+
+h2 {
+  font-family: 'Dancing Script', cursive;
+	font-size: 80px;
+	margin-bottom: 30px;
+  margin-top: -200px;
+  margin-left: 300px;
+}
+
+.p1-about-us {
+	font-family: 'Open Sans', sans-serif;
+	margin-bottom: 30px;
+  margin-left: 300px;
+  margin-right: 600px;
+}
+
+.bbuster {
+  margin-left: 300px;
+}

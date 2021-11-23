@@ -10,6 +10,7 @@ import MovieList from './pages/MovieList';
 import MovieRandomiser from './pages/MovieRandomiser'
 import ShowMovie from './pages/ShowMovie'
 import SearchForm from './pages/SearchForm'
+import AboutUs from './pages/AboutUs'
 import brockbuster from './components/BrockBuster2.png'
 import './App.css';
 
@@ -78,6 +79,7 @@ render() {
           <NavLink exact to='/movies/search'>SEARCH</NavLink>
           <NavLink exact to='/movies/add'>ADD MOVIE</NavLink>
           <NavLink exact to='/movies/randomiser'>RANDOMISER</NavLink>
+          <NavLink exact to='/movies/about-us'>ABOUT US</NavLink>
         </nav>
         </header>
       <main>
@@ -95,7 +97,10 @@ render() {
             <CreateMovie createMovie={this.createMovie} />
           </Route>
           <Route exact path='/movies/randomiser'>
-            <MovieRandomiser  movieList={this.state.movies}/>
+            <MovieRandomiser movieList={this.state.movies}/>
+          </Route>
+          <Route exact path='/movies/about-us'>
+            <AboutUs movieList={this.state.movies}/>
           </Route>
           <Route path='/movies/edit' render={({ location }) =>
             <EditMovie updateMovie={this.updateMovie} location={location} />
