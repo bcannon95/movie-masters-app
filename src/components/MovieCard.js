@@ -5,7 +5,7 @@ export default function MovieCard(props) {
     return (
         <div className="p-2">
             <div className="card" style={{'width': '18rem'}}>
-                <img className="card-img-top" src={props.movie.image} alt={props.movie.name} />
+                <img className="card-img-top" src={props.movie.poster} alt={props.movie.name} />
                 <div className="card-body">
                     <h5 className="card-title">{props.movie.name}</h5>
                     <p className="card-text"><strong>Rating: </strong>{props.movie.rating}</p>

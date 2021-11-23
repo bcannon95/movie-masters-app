@@ -9,7 +9,11 @@ import EditMovie from './pages/EditMovie';
 import MovieList from './pages/MovieList';
 import MovieRandomiser from './pages/MovieRandomiser'
 import ShowMovie from './pages/ShowMovie'
+import SearchForm from './pages/SearchForm'
+import brockbuster from './components/BrockBuster2.png'
 import './App.css';
+
+const moviesCol = collection(db, 'movies')
 
 export default class App extends React.Component {
 	state = {
@@ -26,7 +30,7 @@ export default class App extends React.Component {
   removeMovie = async id => {
   const movieDoc = doc(moviesCol, id);
 
-  await deleteDoc(moviesDoc);
+  await deleteDoc(movieDoc);
 
   this.props.history.push('/movies');
   this.readMovies();
@@ -68,35 +72,36 @@ render() {
   return (
     <div className="App">
       <header className="App-header">
-        <NavLink exact to='/'>Movie Masters</NavLink>
+        <NavLink exact to='/'>BROCKBUSTER</NavLink>
         <nav>
-          {/* Use this.state.user to conditionally render the menu */}
-          <NavLink exact to='/puppies'>MOVIE LIST</NavLink>
-          <NavLink exact to='/puppies/add'>ADD MOVIE</NavLink>
+          <NavLink exact to='/movies'>MOVIE LIST</NavLink>
+          <NavLink exact to='/movies/search'>SEARCH</NavLink>
+          <NavLink exact to='/movies/add'>ADD MOVIE</NavLink>
+          <NavLink exact to='/movies/randomiser'>RANDOMISER</NavLink>
         </nav>
-      </header>
+        </header>
       <main>
         <Switch>
           <Route exact path='/'>
             <Home />
           </Route>
-          {/* Create routes to the Login and Register components here */}
-          {/* Create a /logout route that calls the logout method */}
           <Route exact path='/movies'>
-            {/* Refactor using the Redirect component */}
             <MovieList movieList={this.state.movies} removeMovie={this.removeMovie} />
           </Route>
+          <Route exact path='/movies/search'>
+            <SearchForm  movieList={this.state.movies} getMovieData={this.getMovieData} />
+          </Route>
           <Route exact path='/movies/add'>
-            {/* Refactor using the Redirect component */}
             <CreateMovie createMovie={this.createMovie} />
           </Route>
+          <Route exact path='/movies/randomiser'>
+            <MovieRandomiser  movieList={this.state.movies}/>
+          </Route>
           <Route path='/movies/edit' render={({ location }) =>
-            // Refactor by pushing users to the /login route
             <EditMovie updateMovie={this.updateMovie} location={location} />
           } />
           <Route path='/movies/details' render={({ location }) =>
-            // Refactor by pushing users to the /login route
-            <MovieCard removeMovie={this.removeMovie} location={location} />
+            <ShowMovie removeMovie={this.removeMovie} location={location} />
           } />
           <Route path='*'>
             <div className='panel panel-default homepage'>404</div>

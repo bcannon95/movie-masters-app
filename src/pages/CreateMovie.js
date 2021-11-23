@@ -21,7 +21,7 @@ export default class CreateMovie extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        this.props.createmovie(this.state.formData);
+        this.props.createMovie(this.state.formData);
     }
 
     render() {

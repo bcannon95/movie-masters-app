@@ -13,7 +13,7 @@ export default function ShowMovie(props) {
                         <div className="card-text"><strong>Year: </strong>{selectedMovie.year}</div>
                     </div>
                 </div>
-                <img className="card-img-top border-top border-bottom" src={selectedMovie.image} alt={selectedMovie.name} />
+                <img className="card-img-top border-top border-bottom" src={selectedMovie.poster} alt={selectedMovie.name} />
                 <div className="card-body">
                     <div className='d-flex justify-content-center'>
                         <Link className='btn btn-xs btn-warning' to={{ pathname: `/movies/edit/${selectedMovie.id}`, state: {selectedMovie: selectedMovie}  }}>EDIT</Link>
