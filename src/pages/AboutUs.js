@@ -9,7 +9,7 @@ class AboutUs extends React.Component {
   render() {
     return  (
       <div>
-          <h2>About Us</h2>
+          <h2 className="h2-about-us">About Us</h2>
          <div>
             <p className="p1-about-us">How many times have you found yourself scrolling through streaming services not knowing what to watch?
              Countless hours just wasting a way as sheer indecisiveness takes over. Well worry no more!!

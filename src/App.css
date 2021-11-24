@@ -132,7 +132,7 @@ span a:hover{
   transform: translateZ(-25px) rotateX(-90deg);
 }
 
-h2 {
+.h2-about-us {
   font-family: 'Open Sans', sans-serif;
 	font-size: 80px;
 	margin-bottom: 30px;
